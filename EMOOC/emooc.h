@@ -2,69 +2,66 @@
 #define EMOOC_H__
 
 
-//2019-11-25ÀÏ 12½Ã 55ºĞ ¹öÀü
+//2019-12-23ì¼ 12ì‹œ 55ë¶„ ë²„ì „
 
 /************************************************/
-/* ¶óÀÌºê·¯¸® »ç¿ë */
+/* ë¼ì´ë¸ŒëŸ¬ë¦¬ ì‚¬ìš© */
 
-#include <stdlib.h> /*C Ç¥ÁØ, malloc µî »ç¿ë À§ÇÔ*/
+#include <stdlib.h> /*C í‘œì¤€, malloc ë“± ì‚¬ìš© ìœ„í•¨*/
 // #define STDLIB_ABLE
 /************************************************/
-/* Å¬·¡½º Æ² */
+/* í´ë˜ìŠ¤ í‹€ */
 
-/* Å¬·¡½º ½ÃÀÛ */
+/* í´ë˜ìŠ¤ ì‹œì‘ */
 #define class_begin(class_name) \
 typedef struct class_name class_name; \
 typedef struct class_name { \
 
-/* Å¬·¡½º ½ÃÀÛ: private°¡ ÀÖ´Â Å¬·¡½º */
+/* í´ë˜ìŠ¤ ì‹œì‘: privateê°€ ìˆëŠ” í´ë˜ìŠ¤ */
 #define class_begin_with_private(class_name) \
 typedef struct class_name##_private_seed class_name##_private_seed; \
 typedef struct class_name class_name; \
 typedef struct class_name {
 
-/* »ó¼Ó */
+/* ìƒì† */
 #define inherited_from(parent_class_name) \
 parent_class_name from_##parent_class_name;
 
-/* Å¬·¡½º Á¾·á */
+/* í´ë˜ìŠ¤ ì¢…ë£Œ */
 #define class_end(class_name) } class_name;
 
 #define class_end_with_private(class_name) \
 class_name##_private_seed* private_pointer; } class_name;
 
-/* private ½ÃÀÛ */
+/* private ì‹œì‘ */
 #define private_begin(class_name) \
 typedef struct class_name##_private_seed{
 
-/* private Á¾·á */
+/* private ì¢…ë£Œ */
 #define private_end(class_name) } class_name##_private_seed;
 
 /************************************************/
-/* ¸â¹ö ÇÔ¼ö ¼±¾ğ  */
+/* ë©¤ë²„ í•¨ìˆ˜ ì„ ì–¸  */
 #define class_func(type, name) type (*name)
 
 /************************************************/
-/* ¸â¹ö ÇÔ¼ö ±¸Çö¿ë */
+/* ë©¤ë²„ í•¨ìˆ˜ êµ¬í˜„ìš© */
 
-/* ¼±¾ğ */
+/* ì„ ì–¸ */
 #define pointer_to_class(class_name) \
 class_name *myself_pointer
 
 /***********************************************************************************************************/
 /***********************************************************************************************************/
-/* ³ªÁß¿¡ Ãß¸®ÀÚ */
-
-/* Á¤ÀÇ */
+/* ì •ì˜ */
 #define member_function_definition_of_the(classname) static
 #define class_func_def(type, name) static type name
 #define def_class_func(type, name) static type name
-#define def_func(type, name) static type name
 
 /***********************************************************************************************************/
-/* private °ü·Ã */
+/* private ê´€ë ¨ */
 
-/* ÇÔ¼ö ³»ºÎ¿¡¼­ private »ç¿ë */
+/* í•¨ìˆ˜ ë‚´ë¶€ì—ì„œ private ì‚¬ìš© */
 #define mk_myself_private(class_name) \
 class_name##_private_seed *myself_private_pointer = myself_pointer->private_pointer
 
@@ -73,7 +70,7 @@ class_name##_private_seed *myself_private_pointer = myself_pointer->private_poin
 #define myself_private (*myself_private_pointer)
 #define private_member (*private_pointer)
 
-/* private »ç¿ë °¡´ÉÇÏ°Ô ¸Ş¸ğ¸® ÇÒ´ç */
+/* private ì‚¬ìš© ê°€ëŠ¥í•˜ê²Œ ë©”ëª¨ë¦¬ í• ë‹¹ */
 #define malloc_private(class_name) \
 class_name##_private_seed *myself_private_pointer =  (class_name##_private_seed *)malloc(sizeof(class_name##_private_seed)); \
 myself_pointer->private_pointer = myself_private_pointer;
@@ -87,31 +84,11 @@ myself_pointer->private_pointer = myself_private_pointer;
 free(myself_pointer->private_pointer)
 
 /***********************************************************************************************************/
-/* »ı¼ºÀÚ ¹× ¼Ò¸êÀÚ */
-#define def_default_new_malloc(class_name) \
+/* ìƒì„±ì ë° ì†Œë©¸ì */
+#define def_default_new(class_name) \
 class_name* new_##class_name() { \
 	class_name* temp_##class_name = (class_name*)malloc(sizeof(class_name)); \
 	init_##class_name(temp_##class_name); \
-	return temp_##class_name; \
-}
-
-#define def_default_new_malloc_uninitialized(class_name) \
-class_name* new_##class_name##_uninitialized() { \
-	class_name* temp_##class_name = (class_name*)malloc(sizeof(class_name)); \
-	return temp_##class_name; \
-}
-
-/************************************************/
-#define def_default_new_calloc(class_name) \
-class_name* new_##class_name() { \
-	class_name *temp_##class_name = (class_name*)calloc(1, sizeof(class_name)); \
-	init_##class_name(temp_##class_name); \
-	return temp_##class_name; \
-}
-
-#define def_default_new_calloc_uninitialized(class_name) \
-class_name* new_##class_name##_uninitialized() { \
-	class_name *temp_##class_name = (class_name*)calloc(1, sizeof(class_name)); \
 	return temp_##class_name; \
 }
 
@@ -129,13 +106,13 @@ void free_##class_name(pointer_to_class(class_name)) { \
 
 /***********************************************************************************************************/
 /************************************************/
-/* Å¬·¡½º ÃÊ±âÈ­ */
+/* í´ë˜ìŠ¤ ì´ˆê¸°í™” */
 #define init_instance {0};
 
 /************************************************/
 
 /**********************************************************************/
-/* ¾Æ¿ô¶óÀÎÅ¬·¡½º */
+/* ì•„ì›ƒë¼ì¸í´ë˜ìŠ¤ */
 
 #define outline_class_begin(outline_class_name) \
 typedef struct outline_class_name outline_class_name; \
@@ -146,7 +123,7 @@ typedef struct outline_class_name { \
 
 #define outline_class_func(type, name) type (*name)
 
-/* ÀÎÅÍÆäÀÌ½º´Â ¸ÅÅ©·Î »ç¿ë */
+/* ì¸í„°í˜ì´ìŠ¤ëŠ” ë§¤í¬ë¡œ ì‚¬ìš© */
 
 /**********************************************************************/
 /***********************************************************************************************************/
