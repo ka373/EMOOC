@@ -112,7 +112,7 @@ void free_##class_name(pointer_to_class(class_name)) { \
 /************************************************/
 
 /**********************************************************************/
-/* 아웃라인클래스 */
+/* 아웃라인 클래스 */
 
 #define outline_class_begin(outline_class_name) \
 typedef struct outline_class_name outline_class_name; \
